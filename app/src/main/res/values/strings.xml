@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+
+    <string name="link_register_link"><u>Register an Account</u></string>
+    <string name="link_register_text">Don\'t Have account yet?</string>
+    <string name="button_login_text">Login</string>
+
+    <string name="button_register_text">Register</string>
+    <string name="link_login_text">Already have an account?</string>
+    <string name="link_login_link">Login</string>
+
+    <string name="input_password_placeholder">Password</string>
+    <string name="input_email_placeholder">Email</string>
+    <string name="input_name_placeholder">Name</string>
+</resources>
