@@ -12,4 +12,9 @@
     <string name="input_password_placeholder">Password</string>
     <string name="input_email_placeholder">Email</string>
     <string name="input_name_placeholder">Name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_email">Email not valid</string>
+    <string name="error_password">Password must contain at lease 6 characters</string>
+    <string name="error_require">Please fill the input data</string>
 </resources>
