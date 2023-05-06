@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.auth.RegisterFragment">
+    tools:context=".features.auth.register.RegisterFragment">
 
     <View
         android:id="@+id/view"
@@ -49,7 +49,7 @@
         android:hint="@string/input_email_placeholder"
         app:layout_constraintTop_toBottomOf="@+id/input_name" />
 
-    <com.primagiant.storyapp.ui.custom.CustomInputPassword
+    <com.primagiant.storyapp.features.auth.custom.CustomInputPassword
         android:id="@+id/input_password"
         style="@style/gEditInput"
         android:layout_width="match_parent"

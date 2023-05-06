@@ -1,8 +1,7 @@
-package com.primagiant.storyapp.ui.main
+package com.primagiant.storyapp.features.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.primagiant.storyapp.R
 import com.primagiant.storyapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

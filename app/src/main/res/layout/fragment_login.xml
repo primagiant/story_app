@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.LoginFragment">
+    tools:context=".features.auth.login.LoginFragment">
 
     <View
         android:id="@+id/view"
@@ -40,14 +40,34 @@
         android:hint="@string/input_email_placeholder"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <com.primagiant.storyapp.ui.custom.CustomInputPassword
+    <TextView
+        android:id="@+id/error_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email not valid"
+        style="@style/gInputError"
+        app:layout_constraintStart_toStartOf="@+id/input_email"
+        app:layout_constraintTop_toBottomOf="@+id/input_email" />
+
+    <com.primagiant.storyapp.features.auth.custom.CustomInputPassword
         android:id="@+id/input_password"
         style="@style/gEditInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="@string/input_password_placeholder"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/input_email" />
+
+    <TextView
+        android:id="@+id/error_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password must contain at lease 8 characters"
+        style="@style/gInputError"
+        app:layout_constraintStart_toStartOf="@+id/input_password"
+        app:layout_constraintTop_toBottomOf="@+id/input_password" />
+
 
     <Button
         android:id="@+id/button_login"

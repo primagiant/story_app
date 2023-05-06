@@ -1,9 +1,10 @@
-package com.primagiant.storyapp.ui.auth
+package com.primagiant.storyapp.features.auth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.primagiant.storyapp.R
 import com.primagiant.storyapp.databinding.ActivityAuthBinding
+import com.primagiant.storyapp.features.auth.login.LoginFragment
 
 class AuthActivity : AppCompatActivity() {
 
@@ -20,8 +21,8 @@ class AuthActivity : AppCompatActivity() {
             .beginTransaction()
             .add(
                 R.id.auth_container,
-                RegisterFragment(),
-                RegisterFragment::class.java.simpleName
+                LoginFragment(),
+                LoginFragment::class.java.simpleName
             ).commit()
     }
 }
