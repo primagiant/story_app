@@ -17,8 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.primagiant.storyapp.R
 import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.databinding.FragmentRegisterBinding
-import com.primagiant.storyapp.features.auth.AuthViewModel
-import com.primagiant.storyapp.features.auth.AuthViewModelFactory
+import com.primagiant.storyapp.features.MainViewModel
+import com.primagiant.storyapp.features.MainViewModelFactory
 import com.primagiant.storyapp.features.auth.login.LoginFragment
 import com.primagiant.storyapp.features.story.StoryActivity
 
@@ -41,8 +41,8 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val pref = AuthPreferences.getInstance(requireContext().dataStore)
-        val authViewModel =
-            ViewModelProvider(this, AuthViewModelFactory(pref))[AuthViewModel::class.java]
+        val mainViewModel =
+            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
         binding.apply {
             // Validate Password
@@ -81,7 +81,7 @@ class RegisterFragment : Fragment() {
                     inputPassword.text.toString()
                 )
                 if (valid) {
-                    authViewModel.apply {
+                    mainViewModel.apply {
                         register(
                             inputName.text.toString(),
                             inputEmail.text.toString(),
@@ -104,10 +104,6 @@ class RegisterFragment : Fragment() {
                 val fragmentManager = requireActivity().supportFragmentManager
                 fragmentManager
                     .beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.slide_left_to_right,
-                        R.anim.slide_left_to_right
-                    )
                     .replace(
                         R.id.main_container,
                         LoginFragment(),

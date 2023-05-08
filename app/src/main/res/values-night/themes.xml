@@ -1,8 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.StoryApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/darkPrimaryColor</item>
+    <style name="Theme.StoryApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/accentColor</item>
+        <item name="colorOnPrimary">@color/textColor</item>
+        <item name="tabTextColor">@color/textColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/darkPrimaryColor</item>
+        <item name="colorSecondaryVariant">@color/accentColor</item>
+        <item name="colorOnSecondary">@color/secondaryText</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
         <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

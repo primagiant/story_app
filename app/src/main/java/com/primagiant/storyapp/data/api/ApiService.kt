@@ -2,6 +2,7 @@ package com.primagiant.storyapp.data.api
 
 import com.primagiant.storyapp.data.response.NewStoryResponse
 import com.primagiant.storyapp.data.response.AllStoryResponse
+import com.primagiant.storyapp.data.response.DetailStoryResponse
 import com.primagiant.storyapp.data.response.LoginResponse
 import com.primagiant.storyapp.data.response.RegisterResponse
 import okhttp3.MultipartBody
@@ -26,7 +27,6 @@ interface ApiService {
     ): Call<LoginResponse>
 
     @Multipart
-    @Headers("Authorization: Bearer <token>")
     @POST("stories")
     fun addStory(
         @Field("description") description : String,
@@ -36,11 +36,12 @@ interface ApiService {
     ): Call<NewStoryResponse>
 
     @GET("stories")
-    fun getAllStory(): Call<AllStoryResponse>
+    fun getAllStory(
+    ): Call<AllStoryResponse>
 
     @GET("stories/{id}")
     fun detailStory(
         @Path("id") id : String
-    ): Call<AllStoryResponse>
+    ): Call<DetailStoryResponse>
 
 }

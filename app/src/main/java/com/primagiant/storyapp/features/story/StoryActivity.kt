@@ -2,22 +2,24 @@ package com.primagiant.storyapp.features.story
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.primagiant.storyapp.MainActivity
-import com.primagiant.storyapp.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.primagiant.storyapp.data.local.datastore.AuthPreferences
-import com.primagiant.storyapp.databinding.ActivityMainBinding
+import com.primagiant.storyapp.data.response.ListStoryItem
 import com.primagiant.storyapp.databinding.ActivityStoryBinding
-import com.primagiant.storyapp.features.auth.AuthViewModel
-import com.primagiant.storyapp.features.auth.AuthViewModelFactory
-import com.primagiant.storyapp.features.auth.login.LoginFragment
+import com.primagiant.storyapp.features.MainViewModel
+import com.primagiant.storyapp.features.MainViewModelFactory
+import com.primagiant.storyapp.features.story.adapter.StoryListAdapter
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
+
 class StoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStoryBinding
@@ -28,21 +30,45 @@ class StoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val pref = AuthPreferences.getInstance(dataStore)
-        val authViewModel =
-            ViewModelProvider(this, AuthViewModelFactory(pref))[AuthViewModel::class.java]
+        val mainViewModel =
+            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
-        binding.buttonLogout.setOnClickListener {
+        mainViewModel.apply {
+            isLoading.observe(this@StoryActivity) { isLoading ->
+                showLoading(isLoading)
+            }
+            message.observe(this@StoryActivity) { msg ->
+                Toast.makeText(this@StoryActivity, msg, Toast.LENGTH_SHORT).show()
+            }
+            getToken().observe(this@StoryActivity) { token ->
+                getStoryList(token)
+            }
+        }
+        binding.rvStoryList.apply {
+            mainViewModel.storyList.observe(this@StoryActivity) { items ->
+                val adapter = StoryListAdapter(items, this@StoryActivity)
+                this.adapter = adapter
+                adapter.setOnStoryListClickCallback(object :
+                    StoryListAdapter.OnStoryListClickCallback {
+                    override fun onItemClicked(story: ListStoryItem) {
+                        val intent = Intent(this@StoryActivity, DetailStoryActivity::class.java)
+                        intent.putExtra(DetailStoryActivity.ID, story.id)
+                        startActivity(intent)
+                    }
+                })
+            }
+            layoutManager = LinearLayoutManager(this@StoryActivity)
+        }
+
+        /*binding.buttonLogout.setOnClickListener {
             authViewModel.logout()
             authViewModel.getToken().observe(this) { token ->
                 isLogin(token)
             }
-        }
+        }*/
     }
 
-    private fun isLogin(token: String) {
-        if (token != "") {
-            val intent = Intent(this@StoryActivity, MainActivity::class.java)
-            startActivity(intent)
-        }
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

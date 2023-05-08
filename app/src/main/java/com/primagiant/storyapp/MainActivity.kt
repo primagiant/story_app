@@ -10,8 +10,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.databinding.ActivityMainBinding
-import com.primagiant.storyapp.features.auth.AuthViewModel
-import com.primagiant.storyapp.features.auth.AuthViewModelFactory
+import com.primagiant.storyapp.features.MainViewModel
+import com.primagiant.storyapp.features.MainViewModelFactory
 import com.primagiant.storyapp.features.auth.login.LoginFragment
 import com.primagiant.storyapp.features.story.StoryActivity
 
@@ -27,10 +27,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val pref = AuthPreferences.getInstance(dataStore)
-        val authViewModel =
-            ViewModelProvider(this, AuthViewModelFactory(pref))[AuthViewModel::class.java]
+        val mainViewModel =
+            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
-        authViewModel.getToken().observe(this) { token ->
+        mainViewModel.getToken().observe(this) { token ->
             isLogin(token)
         }
 

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.primagiant.storyapp.R
 import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.databinding.FragmentLoginBinding
-import com.primagiant.storyapp.features.auth.AuthViewModel
-import com.primagiant.storyapp.features.auth.AuthViewModelFactory
+import com.primagiant.storyapp.features.MainViewModel
+import com.primagiant.storyapp.features.MainViewModelFactory
 import com.primagiant.storyapp.features.auth.register.RegisterFragment
 import com.primagiant.storyapp.features.story.StoryActivity
 
@@ -40,8 +41,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val pref = AuthPreferences.getInstance(requireContext().dataStore)
-        val authViewModel =
-            ViewModelProvider(this, AuthViewModelFactory(pref))[AuthViewModel::class.java]
+        val mainViewModel =
+            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
         binding.apply {
             // Validate Password
@@ -79,7 +80,7 @@ class LoginFragment : Fragment() {
                     inputPassword.text.toString()
                 )
                 if (valid) {
-                    authViewModel.apply {
+                    mainViewModel.apply {
                         login(
                             inputEmail.text.toString(),
                             inputPassword.text.toString()
@@ -107,10 +108,6 @@ class LoginFragment : Fragment() {
                 val fragmentManager = requireActivity().supportFragmentManager
                 fragmentManager
                     .beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.slide_right_to_left,
-                        R.anim.slide_left_to_right
-                    )
                     .replace(
                         R.id.main_container,
                         RegisterFragment(),
