@@ -83,6 +83,7 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
                         this.transformationMethod = HideReturnsTransformationMethod.getInstance()
                         return true
                     }
+
                     MotionEvent.ACTION_UP -> {
                         this.transformationMethod = PasswordTransformationMethod.getInstance()
                         return true
@@ -113,14 +114,5 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
             endOfTheText,
             bottomOfTheText
         )
-    }
-
-    fun isPasswordValid(password: String): Boolean {
-        val passwordRegex = Regex("^(?=.*[A-Z])(?=.*[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?])(?=\\S+\$).{8,}\$")
-        return passwordRegex.matches(password)
-    }
-
-    private fun isEightDigit(password: String): Boolean {
-        return password.length >= 8
     }
 }

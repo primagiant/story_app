@@ -1,6 +1,5 @@
 package com.primagiant.storyapp.features
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,8 +11,11 @@ import com.primagiant.storyapp.data.response.AllStoryResponse
 import com.primagiant.storyapp.data.response.DetailStoryResponse
 import com.primagiant.storyapp.data.response.ListStoryItem
 import com.primagiant.storyapp.data.response.LoginResponse
+import com.primagiant.storyapp.data.response.NewStoryResponse
 import com.primagiant.storyapp.data.response.RegisterResponse
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,6 +92,34 @@ class MainViewModel(
         })
     }
 
+    fun addStory(desc: RequestBody, photo: MultipartBody.Part, token: String) {
+        _isLoading.value = true
+
+        val client = ApiConfig
+            .getApiService("Bearer $token")
+            .addStory(desc, photo)
+
+        client.enqueue(object : Callback<NewStoryResponse> {
+            override fun onResponse(
+                call: Call<NewStoryResponse>,
+                response: Response<NewStoryResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                } else {
+                    _message.value = response.message()
+                }
+            }
+
+            override fun onFailure(call: Call<NewStoryResponse>, t: Throwable) {
+                _isLoading.value = false
+                _message.value = t.message.toString()
+            }
+
+        })
+    }
+
     fun login(email: String, password: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().login(email, password)
@@ -106,14 +136,12 @@ class MainViewModel(
 
                 } else {
                     _message.value = response.message()
-                    Log.d("Test", response.message())
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 _isLoading.value = false
                 _message.value = t.message.toString()
-                Log.d("Test", t.message.toString())
             }
 
         })
@@ -134,14 +162,12 @@ class MainViewModel(
                     login(email, password)
                 } else {
                     _message.value = response.message()
-                    Log.d("Test", response.message())
                 }
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _isLoading.value = false
                 _message.value = t.message.toString()
-                Log.d("Test", t.message.toString())
             }
 
         })

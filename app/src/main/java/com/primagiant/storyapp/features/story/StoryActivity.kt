@@ -21,7 +21,6 @@ import com.primagiant.storyapp.data.response.ListStoryItem
 import com.primagiant.storyapp.databinding.ActivityStoryBinding
 import com.primagiant.storyapp.features.MainViewModel
 import com.primagiant.storyapp.features.MainViewModelFactory
-import com.primagiant.storyapp.features.auth.login.LoginFragment
 import com.primagiant.storyapp.features.story.adapter.StoryListAdapter
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
@@ -68,7 +67,7 @@ class StoryActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@StoryActivity)
         }
 
-        binding.addStory.setOnClickListener{
+        binding.addStory.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
             startActivity(intent)
         }

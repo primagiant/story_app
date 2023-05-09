@@ -1,5 +1,7 @@
 package com.primagiant.storyapp.features.auth.register
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -110,6 +112,30 @@ class RegisterFragment : Fragment() {
                         LoginFragment::class.java.simpleName
                     ).commit()
             }
+        }
+
+        animate()
+    }
+
+    private fun animate() {
+
+        val title = ObjectAnimator.ofFloat(binding.title, View.ALPHA, 1f).setDuration(500)
+        val inputName = ObjectAnimator.ofFloat(binding.inputName, View.ALPHA, 1f).setDuration(500)
+        val inputEmail = ObjectAnimator.ofFloat(binding.inputEmail, View.ALPHA, 1f).setDuration(500)
+        val inputPassword =
+            ObjectAnimator.ofFloat(binding.inputPassword, View.ALPHA, 1f).setDuration(500)
+        val buttonRegister =
+            ObjectAnimator.ofFloat(binding.buttonRegister, View.ALPHA, 1f).setDuration(500)
+        val tv = ObjectAnimator.ofFloat(binding.textView2, View.ALPHA, 1f).setDuration(500)
+        val linkLogin = ObjectAnimator.ofFloat(binding.linkLogin, View.ALPHA, 1f).setDuration(500)
+
+        val together = AnimatorSet().apply {
+            playTogether(tv, linkLogin)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(title, inputName, inputEmail, inputPassword, buttonRegister, together)
+            start()
         }
     }
 

@@ -17,6 +17,11 @@
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
             android:name=".features.story.CameraActivity"
             android:exported="false" />
         <activity
@@ -29,7 +34,7 @@
             android:name=".features.story.StoryActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".features.SplashActivity"
             android:exported="true"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

@@ -1,11 +1,12 @@
 package com.primagiant.storyapp.features.auth.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -114,6 +115,29 @@ class LoginFragment : Fragment() {
                         RegisterFragment::class.java.simpleName
                     ).commit()
             }
+        }
+
+        animate()
+    }
+
+    private fun animate() {
+        val title = ObjectAnimator.ofFloat(binding.title, View.ALPHA, 1f).setDuration(500)
+        val inputEmail = ObjectAnimator.ofFloat(binding.inputEmail, View.ALPHA, 1f).setDuration(500)
+        val inputPassword =
+            ObjectAnimator.ofFloat(binding.inputPassword, View.ALPHA, 1f).setDuration(500)
+        val buttonLogin =
+            ObjectAnimator.ofFloat(binding.buttonLogin, View.ALPHA, 1f).setDuration(500)
+        val tv = ObjectAnimator.ofFloat(binding.textView, View.ALPHA, 1f).setDuration(500)
+        val linkRegister =
+            ObjectAnimator.ofFloat(binding.linkRegister, View.ALPHA, 1f).setDuration(500)
+
+        val together = AnimatorSet().apply {
+            playTogether(linkRegister, tv)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(title, inputEmail, inputPassword, buttonLogin, together)
+            start()
         }
     }
 

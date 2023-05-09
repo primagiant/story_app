@@ -65,7 +65,7 @@ class DetailStoryActivity : AppCompatActivity() {
     }
 
     companion object {
-        val ID = "1"
+        const val ID = "1"
     }
 
 }

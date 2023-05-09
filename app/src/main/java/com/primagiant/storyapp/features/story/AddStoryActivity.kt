@@ -1,7 +1,6 @@
 package com.primagiant.storyapp.features.story
 
 import android.Manifest
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
@@ -9,22 +8,38 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import com.primagiant.storyapp.R
+import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.databinding.ActivityAddStoryBinding
+import com.primagiant.storyapp.features.MainViewModel
+import com.primagiant.storyapp.features.MainViewModelFactory
+import com.primagiant.storyapp.utils.reduceFileImage
 import com.primagiant.storyapp.utils.uriToFile
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
 
 class AddStoryActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityAddStoryBinding
+    private lateinit var binding: ActivityAddStoryBinding
+    private lateinit var mainViewModel: MainViewModel
+
+    private var getFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +47,10 @@ class AddStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title = getString(R.string.add_story)
+
+        val pref = AuthPreferences.getInstance(dataStore)
+        mainViewModel =
+            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
@@ -71,7 +90,41 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun addStory() {
-        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+        if (getFile != null) {
+
+            val file = reduceFileImage(getFile as File)
+
+            val desc = binding.inputDesc.text.toString().toRequestBody("image/plain".toMediaType())
+            val photo = file.asRequestBody("image/jpeg".toMediaType())
+            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "photo",
+                file.name,
+                photo
+            )
+
+            mainViewModel.apply {
+                isLoading.observe(this@AddStoryActivity) { isLoading ->
+                    showLoading(isLoading)
+                }
+                message.observe(this@AddStoryActivity) { msg ->
+                    Toast.makeText(this@AddStoryActivity, msg, Toast.LENGTH_SHORT).show()
+                }
+                getToken().observe(this@AddStoryActivity) { token ->
+                    addStory(desc, imageMultipart, token)
+                }
+            }
+        } else {
+            Toast.makeText(
+                this@AddStoryActivity,
+                "Silakan masukkan berkas gambar terlebih dahulu.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        val intent = Intent(this, StoryActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        startActivity(intent)
+        finish()
     }
 
     private fun startCameraX() {
@@ -91,6 +144,7 @@ class AddStoryActivity : AppCompatActivity() {
             } as? File
             val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
             myFile?.let { file ->
+                getFile = file
                 binding.imageView.setImageBitmap(BitmapFactory.decodeFile(file.path))
             }
         }
@@ -112,9 +166,14 @@ class AddStoryActivity : AppCompatActivity() {
             val selectedImg = result.data?.data as Uri
             selectedImg.let { uri ->
                 val myFile = uriToFile(uri, this@AddStoryActivity)
+                getFile = myFile
                 binding.imageView.setImageURI(uri)
             }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

@@ -1,11 +1,12 @@
 package com.primagiant.storyapp.data.api
 
-import com.primagiant.storyapp.data.response.NewStoryResponse
 import com.primagiant.storyapp.data.response.AllStoryResponse
 import com.primagiant.storyapp.data.response.DetailStoryResponse
 import com.primagiant.storyapp.data.response.LoginResponse
+import com.primagiant.storyapp.data.response.NewStoryResponse
 import com.primagiant.storyapp.data.response.RegisterResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,10 +30,8 @@ interface ApiService {
     @Multipart
     @POST("stories")
     fun addStory(
-        @Field("description") description : String,
-        @Field("photo") photo : MultipartBody.Part,
-        @Field("lat") lat : Float,
-        @Field("lon") lon : Float
+        @Part("description") description: RequestBody,
+        @Part photo: MultipartBody.Part
     ): Call<NewStoryResponse>
 
     @GET("stories")
@@ -41,7 +40,7 @@ interface ApiService {
 
     @GET("stories/{id}")
     fun detailStory(
-        @Path("id") id : String
+        @Path("id") id: String
     ): Call<DetailStoryResponse>
 
 }
