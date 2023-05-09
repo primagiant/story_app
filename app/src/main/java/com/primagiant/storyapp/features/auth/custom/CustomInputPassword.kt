@@ -67,11 +67,9 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
             override fun afterTextChanged(s: Editable?) {
                 validatePassword(s.toString())
                 if (s.toString().isNotEmpty()) showPassword() else hidePassword()
-                if (s.toString().length < 8) {
-                    background = errorBackground
-                } else {
-                    background = normalBackground
-                }
+                background = if (s.toString().length < 8) {
+                    normalBackground
+                } else errorBackground
             }
 
         })
@@ -79,8 +77,8 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
 
     override fun onTouch(v: View?, e: MotionEvent): Boolean {
         if (compoundDrawables[2] != null) {
-            var showPasswordStart: Float
-            var showPasswordEnd: Float
+            val showPasswordStart: Float
+            val showPasswordEnd: Float
             var isShowPasswordButtonClicked = false
 
             if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
@@ -151,7 +149,7 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
 
     private fun showErrorText(isValid: Boolean) {
         if (errorText != null && !isValid) {
-            setError(errorText)
+            error = errorText
             setTextColor(Color.RED)
         } else {
             error = null
