@@ -120,6 +120,7 @@ class RegisterFragment : Fragment() {
     private fun isLogin(token: String) {
         if (token != "") {
             val intent = Intent(requireActivity(), StoryActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             startActivity(intent)
         }
     }

@@ -22,4 +22,6 @@
     <string name="detail_image">Detail Image</string>
     <string name="detail_story_title">Detail Story</string>
     <string name="logout_text">Logout</string>
+    <string name="add_new_story">Add New Story</string>
+    <string name="add_story">Add New Story</string>
 </resources>
