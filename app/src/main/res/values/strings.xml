@@ -1,27 +1,32 @@
 <resources>
-    <string name="app_name">StoryApp</string>
-
-    <string name="link_register_link"><u>Register an Account</u></string>
-    <string name="link_register_text">Don\'t Have account yet?</string>
-    <string name="button_login_text">Login</string>
-
-    <string name="button_register_text">Register</string>
+    <string name="app_name" translatable="false">StoryApp</string>
+    <string name="link_register_text">Belum punya akun?</string>
+    <string name="button_login_text">Masuk</string>
+    <string name="button_register_text">Daftar</string>
     <string name="link_login_text">Already have an account?</string>
     <string name="link_login_link">Login Now</string>
-
     <string name="input_password_placeholder">Password</string>
     <string name="input_email_placeholder">Email</string>
     <string name="input_name_placeholder">Name</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="error_email">Email not valid</string>
     <string name="error_password">Password must contain at lease 8 characters</string>
     <string name="error_require">Please fill the input data</string>
-    <string name="image_item">image item</string>
+    <string name="image_item">Image Item</string>
     <string name="author_item">author_item</string>
     <string name="detail_image">Detail Image</string>
     <string name="detail_story_title">Detail Story</string>
     <string name="logout_text">Logout</string>
     <string name="add_new_story">Add New Story</string>
     <string name="add_story">Add New Story</string>
+    <string name="error_camera">Failed to open Camera</string>
+    <string name="error_get_picture">Failed to take a Picture</string>
+    <string name="choose_a_picture">Choose a Picture</string>
+    <string name="no_permission">Didn\'t get permission</string>
+    <string name="add_picture_first">Please input file first</string>
+    <string name="link_register_link"><u>Register an Account</u></string>
+    <string name="splash_screen">Splash Screen</string>
+    <string name="camera">Camera</string>
+    <string name="input_description_here">Input description here</string>
+    <string name="upload">Upload</string>
+    <string name="galery">Galery</string>
 </resources>

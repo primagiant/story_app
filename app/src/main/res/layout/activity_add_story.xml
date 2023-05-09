@@ -7,6 +7,8 @@
     tools:context=".features.story.AddStoryActivity">
 
     <ImageView
+        android:background="@drawable/ic_image_24"
+        android:contentDescription="@string/image_item"
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="350dp"
@@ -31,7 +33,7 @@
             android:layout_columnWeight="1"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="Galery" />
+            android:text="@string/galery" />
 
         <Button
             android:id="@+id/btn_camera"
@@ -39,17 +41,18 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Camera" />
+            android:text="@string/camera" />
 
     </GridLayout>
 
     <EditText
+        android:inputType="text"
         android:id="@+id/input_desc"
         style="@style/gEditInput"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
-        android:hint="Input description here"
+        android:hint="@string/input_description_here"
         android:textSize="12sp"
         android:gravity="top"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Upload"
+        android:text="@string/upload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_desc" />

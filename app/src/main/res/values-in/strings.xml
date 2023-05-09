@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="link_register_link"><u>Daftarkan Akun</u></string>
+    <string name="link_register_text">Belum punya akun?</string>
+    <string name="button_login_text">Masuk</string>
+    <string name="button_register_text">Daftar</string>
+    <string name="link_login_text">Sudah mempunyai akun</string>
+    <string name="link_login_link">Masuk sekarang</string>
+    <string name="input_password_placeholder">Sandi</string>
+    <string name="input_email_placeholder">Email</string>
+    <string name="input_name_placeholder">Nama</string>
+    <string name="error_email">Email tidak valid</string>
+    <string name="error_password">Sandi minimal 8 digit</string>
+    <string name="error_require">Tolong isi data</string>
+    <string name="image_item">Item gambar</string>
+    <string name="author_item">item author</string>
+    <string name="detail_image">Detail Gambar</string>
+    <string name="detail_story_title">Detail Cerita</string>
+    <string name="logout_text">Keluar</string>
+    <string name="add_new_story">Tambah Cerita Baru</string>
+    <string name="add_story">Tambah Cerita Baru</string>
+    <string name="error_camera">Gagal membuka kamera</string>
+    <string name="error_get_picture">Gagal mengambil gambar</string>
+    <string name="choose_a_picture">Silakan pilih gambar</string>
+    <string name="no_permission">Tidak mendapat izin</string>
+    <string name="add_picture_first">Silakan tambahkan berkas</string>
+    <string name="splash_screen">Splash Screen</string>
+    <string name="camera">Kamera</string>
+    <string name="input_description_here">Masukkan deskripsi disini</string>
+    <string name="upload">Unggah</string>
+    <string name="galery">Galery</string>
+</resources>

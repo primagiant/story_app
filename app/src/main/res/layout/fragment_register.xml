@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:src="@drawable/auth_wave"
+        android:contentDescription="@string/image_item"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
@@ -34,6 +35,8 @@
         app:layout_constraintTop_toTopOf="@+id/view" />
 
     <EditText
+        android:inputType="text"
+        android:autofillHints="name"
         android:id="@+id/input_name"
         style="@style/gEditInput"
         android:layout_width="match_parent"
@@ -44,6 +47,8 @@
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <EditText
+        android:autofillHints="emailAddress"
+        android:inputType="textEmailAddress"
         android:id="@+id/input_email"
         style="@style/gEditInput"
         android:layout_width="match_parent"

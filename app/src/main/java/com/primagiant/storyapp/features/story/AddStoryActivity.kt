@@ -77,7 +77,7 @@ class AddStoryActivity : AppCompatActivity() {
             if (!allPermissionsGranted()) {
                 Toast.makeText(
                     this,
-                    "Tidak mendapatkan permission.",
+                    getString(R.string.no_permission),
                     Toast.LENGTH_SHORT
                 ).show()
                 finish()
@@ -116,7 +116,7 @@ class AddStoryActivity : AppCompatActivity() {
         } else {
             Toast.makeText(
                 this@AddStoryActivity,
-                "Silakan masukkan berkas gambar terlebih dahulu.",
+                getString(R.string.add_picture_first),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -155,7 +155,7 @@ class AddStoryActivity : AppCompatActivity() {
         val intent = Intent()
         intent.action = ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Choose a Picture")
+        val chooser = Intent.createChooser(intent, getString(R.string.choose_a_picture))
         launcherIntentGallery.launch(chooser)
     }
 
