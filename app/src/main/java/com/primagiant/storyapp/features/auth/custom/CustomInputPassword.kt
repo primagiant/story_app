@@ -2,6 +2,7 @@ package com.primagiant.storyapp.features.auth.custom
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +19,10 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
 
     private lateinit var eyeIcon: Drawable
     private lateinit var lockIcon: Drawable
+    private lateinit var errorBackground: Drawable
+    private lateinit var normalBackground: Drawable
+
+    private var errorText: String? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -42,18 +47,31 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
     private fun init() {
         eyeIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye_24) as Drawable
         lockIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye_24) as Drawable
+        errorBackground =
+            ContextCompat.getDrawable(context, R.drawable.err_input_border) as Drawable
+        normalBackground =
+            ContextCompat.getDrawable(context, R.drawable.input_border) as Drawable
 
         setOnTouchListener(this)
+        maxLines = 1
 
         addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun beforeTextChanged(c: CharSequence?, start: Int, end: Int, count: Int) {
+                // Not used
             }
 
             override fun onTextChanged(c: CharSequence?, start: Int, end: Int, count: Int) {
-                if (c.toString().isNotEmpty()) showPassword() else hidePassword()
+                // Not used
             }
 
-            override fun afterTextChanged(p0: Editable?) {
+            override fun afterTextChanged(s: Editable?) {
+                validatePassword(s.toString())
+                if (s.toString().isNotEmpty()) showPassword() else hidePassword()
+                if (s.toString().length < 8) {
+                    background = errorBackground
+                } else {
+                    background = normalBackground
+                }
             }
 
         })
@@ -114,5 +132,30 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
             endOfTheText,
             bottomOfTheText
         )
+    }
+
+    private fun validatePassword(password: String) {
+        // Validate the password according to your requirements
+        val isValid = password.length >= 8
+
+        // Set the error text if the password is invalid
+        errorText = if (isValid) {
+            null
+        } else {
+            context.getString(R.string.err_password)
+        }
+
+        // Show or hide the error text based on the validity
+        showErrorText(isValid)
+    }
+
+    private fun showErrorText(isValid: Boolean) {
+        if (errorText != null && !isValid) {
+            setError(errorText)
+            setTextColor(Color.RED)
+        } else {
+            error = null
+            setTextColor(Color.BLACK)
+        }
     }
 }
