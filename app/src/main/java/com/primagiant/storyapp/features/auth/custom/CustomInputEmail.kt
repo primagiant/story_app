@@ -12,6 +12,7 @@ import com.primagiant.storyapp.R
 
 class CustomInputEmail : AppCompatEditText {
 
+    var valid: Boolean = false
     private lateinit var errorBackground: Drawable
     private lateinit var normalBackground: Drawable
 
@@ -64,8 +65,10 @@ class CustomInputEmail : AppCompatEditText {
         val isValid = isEmailValid(email)
 
         errorText = if (isValid) {
+            valid = true
             null
         } else {
+            valid = false
             context.getString(R.string.error_email)
         }
 

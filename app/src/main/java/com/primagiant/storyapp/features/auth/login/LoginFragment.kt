@@ -121,7 +121,9 @@ class LoginFragment : Fragment() {
 
     private fun validateInput(email: String, password: String): Boolean {
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            return true
+            if (binding.inputPassword.valid && binding.inputEmail.valid) {
+                return true
+            }
         }
         return false
     }

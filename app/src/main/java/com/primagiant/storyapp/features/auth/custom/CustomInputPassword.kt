@@ -17,6 +17,7 @@ import com.primagiant.storyapp.R
 
 class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
 
+    var valid: Boolean = false
     private lateinit var eyeIcon: Drawable
     private lateinit var lockIcon: Drawable
     private lateinit var errorBackground: Drawable
@@ -67,7 +68,7 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
             override fun afterTextChanged(s: Editable?) {
                 validatePassword(s.toString())
                 if (s.toString().isNotEmpty()) showPassword() else hidePassword()
-                background = if (s.toString().length < 8) {
+                background = if (s.toString().length <= 8) {
                     normalBackground
                 } else errorBackground
             }
@@ -133,17 +134,16 @@ class CustomInputPassword : AppCompatEditText, View.OnTouchListener {
     }
 
     private fun validatePassword(password: String) {
-        // Validate the password according to your requirements
         val isValid = password.length >= 8
 
-        // Set the error text if the password is invalid
         errorText = if (isValid) {
+            valid = true
             null
         } else {
+            valid = false
             context.getString(R.string.err_password)
         }
 
-        // Show or hide the error text based on the validity
         showErrorText(isValid)
     }
 
