@@ -40,14 +40,14 @@ class StoryActivity : AppCompatActivity() {
             ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
         mainViewModel.apply {
+            getToken().observe(this@StoryActivity) { token ->
+                getStoryList(token)
+            }
             isLoading.observe(this@StoryActivity) { isLoading ->
                 showLoading(isLoading)
             }
             message.observe(this@StoryActivity) { msg ->
                 Toast.makeText(this@StoryActivity, msg, Toast.LENGTH_SHORT).show()
-            }
-            getToken().observe(this@StoryActivity) { token ->
-                getStoryList(token)
             }
         }
 

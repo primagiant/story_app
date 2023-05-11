@@ -25,6 +25,7 @@ import com.primagiant.storyapp.databinding.ActivityAddStoryBinding
 import com.primagiant.storyapp.features.MainViewModel
 import com.primagiant.storyapp.features.MainViewModelFactory
 import com.primagiant.storyapp.utils.reduceFileImage
+import com.primagiant.storyapp.utils.rotateFile
 import com.primagiant.storyapp.utils.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -144,6 +145,7 @@ class AddStoryActivity : AppCompatActivity() {
             } as? File
             val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
             myFile?.let { file ->
+                rotateFile(file, isBackCamera)
                 getFile = file
                 binding.imageView.setImageBitmap(BitmapFactory.decodeFile(file.path))
             }
