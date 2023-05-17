@@ -31,4 +31,7 @@
     <string name="upload">Unggah</string>
     <string name="galery">Galery</string>
     <string name="err_password">Sandi setidaknya harus terdiiri dari 8 karakter</string>
+    <string name="validate_image">Silakan pilih gambar terlebih dahulu</string>
+    <string name="validate_desc">Silakan isi deskripsi terlebih dahulu</string>
+    <string name="validate_all">Silakan isi data terlebih dahulu</string>
 </resources>

@@ -1,12 +1,15 @@
 package com.primagiant.storyapp.features
 
+import android.os.Bundle
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.savedstate.SavedStateRegistryOwner
 import com.primagiant.storyapp.data.api.ApiConfig
-import com.primagiant.storyapp.data.local.datastore.AuthPreferences
+import com.primagiant.storyapp.data.local.repository.AuthRepository
 import com.primagiant.storyapp.data.response.AllStoryResponse
 import com.primagiant.storyapp.data.response.DetailStoryResponse
 import com.primagiant.storyapp.data.response.ListStoryItem
@@ -20,8 +23,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class MainViewModel(
-    private val pref: AuthPreferences
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -35,6 +39,13 @@ class MainViewModel(
 
     private val _detailStory = MutableLiveData<DetailStoryResponse>()
     val detailStory: LiveData<DetailStoryResponse> = _detailStory
+
+    private val _token = MutableLiveData<String>()
+    val token: LiveData<String> = _token
+
+    init {
+        getToken()
+    }
 
     fun getStoryList(token: String) {
         _isLoading.value = true
@@ -105,9 +116,7 @@ class MainViewModel(
                 response: Response<NewStoryResponse>
             ) {
                 _isLoading.value = false
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                } else {
+                if (!response.isSuccessful) {
                     _message.value = response.message()
                 }
             }
@@ -158,7 +167,7 @@ class MainViewModel(
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
-                    // val registerResult = response.body()
+                    _message.value = response.message()
                     login(email, password)
                 } else {
                     _message.value = response.message()
@@ -173,18 +182,22 @@ class MainViewModel(
         })
     }
 
-    fun logout() {
-        saveToken("")
-    }
-
-    fun getToken(): LiveData<String> {
-        return pref.getToken().asLiveData()
-    }
-
     private fun saveToken(token: String) {
         viewModelScope.launch {
-            pref.saveToken(token)
+            authRepository.saveToken(token)
         }
+    }
+
+    private fun getToken() {
+        viewModelScope.launch {
+            authRepository.getToken().collect {
+                _token.postValue(it)
+            }
+        }
+    }
+
+    fun logout() {
+        saveToken("")
     }
 
 }

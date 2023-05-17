@@ -1,6 +1,5 @@
 package com.primagiant.storyapp.features.story
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -8,39 +7,31 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.primagiant.storyapp.MainActivity
 import com.primagiant.storyapp.R
-import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.data.response.ListStoryItem
 import com.primagiant.storyapp.databinding.ActivityStoryBinding
 import com.primagiant.storyapp.features.MainViewModel
 import com.primagiant.storyapp.features.MainViewModelFactory
 import com.primagiant.storyapp.features.story.adapter.StoryListAdapter
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
-
 class StoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStoryBinding
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels {
+        MainViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = AuthPreferences.getInstance(dataStore)
-        mainViewModel =
-            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
-
         mainViewModel.apply {
-            getToken().observe(this@StoryActivity) { token ->
+            token.observe(this@StoryActivity) { token ->
                 getStoryList(token)
             }
             isLoading.observe(this@StoryActivity) { isLoading ->
@@ -85,9 +76,10 @@ class StoryActivity : AppCompatActivity() {
             R.id.logout -> {
                 mainViewModel.logout()
                 val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                startActivity(intent)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 finish()
+                startActivity(intent)
                 true
             }
 

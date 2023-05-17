@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:orientation="vertical"
     android:id="@+id/story_item"
-    android:layout_marginBottom="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="320dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/shadow"
+    android:orientation="vertical"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/image_item"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:contentDescription="@string/image_item"
         android:scaleType="center"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="@string/image_item"/>
+        tools:srcCompat="@tools:sample/avatars" />
+
+
+    <TextView
+        android:id="@+id/desc_item"
+        style="@style/gTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="@string/author_item"
+        android:textColor="@color/secondaryText"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/author_item"
+        style="@style/gTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_light"
         android:text="@string/author_item"
-        style="@style/gTextTitle"
-        android:fontFamily="@font/quicksand_semibold"
-        android:textSize="16sp"
-        android:textColor="@color/secondaryText"
-        android:gravity="center"
-        />
+        android:textColor="#bdbdbd"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="15sp" />
 
 </LinearLayout>

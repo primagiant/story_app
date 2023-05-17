@@ -1,7 +1,6 @@
 package com.primagiant.storyapp.features.story
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
@@ -12,15 +11,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import com.primagiant.storyapp.R
-import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.databinding.ActivityAddStoryBinding
 import com.primagiant.storyapp.features.MainViewModel
 import com.primagiant.storyapp.features.MainViewModelFactory
@@ -33,12 +28,12 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
-
 class AddStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddStoryBinding
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels {
+        MainViewModelFactory.getInstance(this)
+    }
 
     private var getFile: File? = null
 
@@ -48,10 +43,6 @@ class AddStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title = getString(R.string.add_story)
-
-        val pref = AuthPreferences.getInstance(dataStore)
-        mainViewModel =
-            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
@@ -64,8 +55,33 @@ class AddStoryActivity : AppCompatActivity() {
         binding.btnCamera.setOnClickListener {
             startCameraX()
         }
-        binding.btnGalery.setOnClickListener { startGallery() }
-        binding.btnSubmit.setOnClickListener { addStory() }
+
+        binding.btnGalery.setOnClickListener {
+            startGallery()
+        }
+
+        binding.btnSubmit.setOnClickListener {
+            validate()
+        }
+    }
+
+    private fun isNotNullImage(): Boolean = getFile != null
+    private fun isNotNullDesc(): Boolean = binding.inputDesc.text.isNotEmpty()
+
+    private fun validate(){
+        if (isNotNullDesc()) {
+            if (isNotNullImage()) {
+                addStory()
+            } else {
+                Toast.makeText(this, getString(R.string.validate_image), Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            if (isNotNullImage()) {
+                Toast.makeText(this, getString(R.string.validate_desc), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, getString(R.string.validate_all), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -110,7 +126,7 @@ class AddStoryActivity : AppCompatActivity() {
                 message.observe(this@AddStoryActivity) { msg ->
                     Toast.makeText(this@AddStoryActivity, msg, Toast.LENGTH_SHORT).show()
                 }
-                getToken().observe(this@AddStoryActivity) { token ->
+                token.observe(this@AddStoryActivity) { token ->
                     addStory(desc, imageMultipart, token)
                 }
             }
@@ -123,9 +139,10 @@ class AddStoryActivity : AppCompatActivity() {
         }
 
         val intent = Intent(this, StoryActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        startActivity(intent)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         finish()
+        startActivity(intent)
     }
 
     private fun startCameraX() {

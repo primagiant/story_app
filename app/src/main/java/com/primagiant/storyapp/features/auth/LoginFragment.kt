@@ -1,32 +1,28 @@
-package com.primagiant.storyapp.features.auth.login
+package com.primagiant.storyapp.features.auth
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.primagiant.storyapp.R
-import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.databinding.FragmentLoginBinding
 import com.primagiant.storyapp.features.MainViewModel
 import com.primagiant.storyapp.features.MainViewModelFactory
-import com.primagiant.storyapp.features.auth.register.RegisterFragment
 import com.primagiant.storyapp.features.story.StoryActivity
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+
+    private val mainViewModel: MainViewModel by viewModels {
+        MainViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +34,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val pref = AuthPreferences.getInstance(requireContext().dataStore)
-        val mainViewModel =
-            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
 
         binding.apply {
             // On Button Click
@@ -62,7 +54,7 @@ class LoginFragment : Fragment() {
                         message.observe(requireActivity()) { msg ->
                             Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
                         }
-                        getToken().observe(requireActivity()) { token ->
+                        token.observe(requireActivity()) { token ->
                             isLogin(token)
                         }
                     }
@@ -114,7 +106,8 @@ class LoginFragment : Fragment() {
     private fun isLogin(token: String) {
         if (token != "") {
             val intent = Intent(requireActivity(), StoryActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
     }

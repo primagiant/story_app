@@ -30,4 +30,7 @@
     <string name="upload">Upload</string>
     <string name="galery">Galery</string>
     <string name="err_password">Password must be at least 8 characters long</string>
+    <string name="validate_image">Please select an Image first</string>
+    <string name="validate_desc">Please fill the description first</string>
+    <string name="validate_all">Please fill the data first</string>
 </resources>

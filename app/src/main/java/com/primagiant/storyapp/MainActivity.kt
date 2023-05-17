@@ -1,36 +1,30 @@
 package com.primagiant.storyapp
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
-import com.primagiant.storyapp.data.local.datastore.AuthPreferences
 import com.primagiant.storyapp.databinding.ActivityMainBinding
 import com.primagiant.storyapp.features.MainViewModel
 import com.primagiant.storyapp.features.MainViewModelFactory
-import com.primagiant.storyapp.features.auth.login.LoginFragment
+import com.primagiant.storyapp.features.auth.LoginFragment
 import com.primagiant.storyapp.features.story.StoryActivity
-
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val mainViewModel: MainViewModel by viewModels {
+        MainViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = AuthPreferences.getInstance(dataStore)
-        val mainViewModel =
-            ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
-
-        mainViewModel.getToken().observe(this) { token ->
+        mainViewModel.token.observe(this) { token ->
             isLogin(token)
         }
 
