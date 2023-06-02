@@ -1,4 +1,4 @@
-package com.primagiant.storyapp.data.response
+package com.primagiant.storyapp.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 

@@ -9,19 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.primagiant.storyapp.R
+import com.primagiant.storyapp.data.local.preference.SettingPreferenceViewModel
 import com.primagiant.storyapp.databinding.FragmentLoginBinding
-import com.primagiant.storyapp.features.MainViewModel
-import com.primagiant.storyapp.features.MainViewModelFactory
+import com.primagiant.storyapp.features.SettingViewModelFactory
 import com.primagiant.storyapp.features.story.StoryActivity
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val mainViewModel: MainViewModel by viewModels {
-        MainViewModelFactory.getInstance(requireActivity())
+    private val authViewModel: AuthViewModel by activityViewModels()
+
+    private val settingPreferenceViewModel: SettingPreferenceViewModel by activityViewModels {
+        SettingViewModelFactory.getInstance(requireActivity())
     }
 
     override fun onCreateView(
@@ -35,6 +37,10 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        settingPreferenceViewModel.getToken().observe(requireActivity()) { token ->
+            isLogin(token)
+        }
+
         binding.apply {
             // On Button Click
             buttonLogin.setOnClickListener {
@@ -43,7 +49,7 @@ class LoginFragment : Fragment() {
                     inputPassword.text.toString()
                 )
                 if (valid) {
-                    mainViewModel.apply {
+                    authViewModel.apply {
                         login(
                             inputEmail.text.toString(),
                             inputPassword.text.toString()
@@ -54,8 +60,8 @@ class LoginFragment : Fragment() {
                         message.observe(requireActivity()) { msg ->
                             Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
                         }
-                        token.observe(requireActivity()) { token ->
-                            isLogin(token)
+                        loginResult.observe(requireActivity()) {
+                            settingPreferenceViewModel.saveToken(it.token)
                         }
                     }
                 } else {

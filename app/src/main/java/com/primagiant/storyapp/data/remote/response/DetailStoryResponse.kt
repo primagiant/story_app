@@ -1,20 +1,20 @@
-package com.primagiant.storyapp.data.response
+package com.primagiant.storyapp.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class AllStoryResponse(
-
-    @field:SerializedName("listStory")
-    val listStory: List<ListStoryItem>,
+data class DetailStoryResponse(
 
     @field:SerializedName("error")
     val error: Boolean,
 
     @field:SerializedName("message")
-    val message: String? = null
+    val message: String,
+
+    @field:SerializedName("story")
+    val story: Story,
 )
 
-data class ListStoryItem(
+data class Story(
 
     @field:SerializedName("photoUrl")
     val photoUrl: String,
@@ -35,5 +35,5 @@ data class ListStoryItem(
     val id: String,
 
     @field:SerializedName("lat")
-    val lat: Any
+    val lat: Any,
 )

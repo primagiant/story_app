@@ -1,4 +1,4 @@
-package com.primagiant.storyapp.data.local.repository
+package com.primagiant.storyapp.data.local.preference
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 const val DATASTORE_NAME = "AUTH"
 val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
 
-class AuthRepository(
+class SettingPreference(
     private val context: Context
 ) {
 
@@ -31,11 +31,11 @@ class AuthRepository(
 
         @SuppressLint("StaticFieldLeak")
         @Volatile
-        private var instance: AuthRepository? = null
+        private var instance: SettingPreference? = null
 
-        fun getInstance(context: Context): AuthRepository =
+        fun getInstance(context: Context): SettingPreference =
             instance ?: synchronized(this) {
-            instance ?: AuthRepository(context)
-        }.also { instance = it }
+                instance ?: SettingPreference(context)
+            }.also { instance = it }
     }
 }

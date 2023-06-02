@@ -1,4 +1,4 @@
-package com.primagiant.storyapp.data.api
+package com.primagiant.storyapp.data.remote.retrofit
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
