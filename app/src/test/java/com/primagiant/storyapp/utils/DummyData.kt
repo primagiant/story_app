@@ -24,6 +24,9 @@ object DummyData {
         return storyList
     }
 
+    fun generateEmptyDummyStoryEntity() : List<ListStoryItem> {
+        return emptyList()
+    }
     fun generateDummyStoryWithLocationEntity(): List<ListStoryItem> {
         val storyList: MutableList<ListStoryItem> = arrayListOf()
         for (i in 0..50) {
