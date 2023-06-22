@@ -8,16 +8,33 @@ import com.primagiant.storyapp.data.remote.response.RegisterResponse
 object DummyData {
 
     fun generateDummyStoryEntity(): List<ListStoryItem> {
-        val storyList = ArrayList<ListStoryItem>()
-        for (i in 0..10) {
+        val storyList: MutableList<ListStoryItem> = arrayListOf()
+        for (i in 0..50) {
             val story = ListStoryItem(
                 "story-$i",
                 "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
-                "2022-01-08T06:34:18.598Z",
-                "Dimas",
-                "Lorem Ipsum",
-                -16.002,
-                -10.212,
+                "created + $i",
+                "name + $i",
+                "description + $i",
+                null,
+                null,
+            )
+            storyList.add(story)
+        }
+        return storyList
+    }
+
+    fun generateDummyStoryWithLocationEntity(): List<ListStoryItem> {
+        val storyList: MutableList<ListStoryItem> = arrayListOf()
+        for (i in 0..50) {
+            val story = ListStoryItem(
+                "story-$i",
+                "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+                "created + $i",
+                "name + $i",
+                "description + $i",
+                i.toDouble(),
+                i.toDouble(),
             )
             storyList.add(story)
         }

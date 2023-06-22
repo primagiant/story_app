@@ -10,12 +10,11 @@ import com.primagiant.storyapp.features.story.StoryViewModel
 
 class ViewModelFactory(
     private val repository: StoryRepository,
-    private val pref: SettingPreference,
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(StoryViewModel::class.java)) {
-            return StoryViewModel(repository, pref) as T
+            return StoryViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown view model class ${modelClass.name}")
     }
@@ -26,7 +25,7 @@ class ViewModelFactory(
 
         fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository(context), Injection.providePreferences(context))
+                instance ?: ViewModelFactory(Injection.provideRepository(context))
             }.also {  }
     }
 

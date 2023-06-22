@@ -41,7 +41,9 @@ class DetailStoryActivity : AppCompatActivity() {
             }
             val idStory = intent?.getStringExtra(EXTRA_ID)
             if (idStory != null) {
-                getDetailStory(idStory)
+                settingPreferenceViewModel.getToken().observe(this@DetailStoryActivity) { token ->
+                    getDetailStory(token, idStory)
+                }
             }
         }
 

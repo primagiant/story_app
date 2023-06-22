@@ -27,7 +27,7 @@ class AuthViewModelTest {
     private val registerData = DummyData.generateDummyRegisterEntity()
 
     @Test
-    fun register() {
+    fun `check the register view model return response`() {
         val observer = Observer<RegisterResponse> {}
 
         try {
@@ -48,7 +48,7 @@ class AuthViewModelTest {
     }
 
     @Test
-    fun login() {
+    fun `check login view model return response`() {
         val observer = Observer<LoginResult> {}
 
         try {

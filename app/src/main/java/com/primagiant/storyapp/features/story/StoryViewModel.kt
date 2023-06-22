@@ -8,13 +8,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.primagiant.storyapp.data.StoryRepository
-import com.primagiant.storyapp.data.local.preference.SettingPreference
 import com.primagiant.storyapp.data.remote.response.DetailStoryResponse
 import com.primagiant.storyapp.data.remote.response.ListStoryItem
 import com.primagiant.storyapp.data.remote.response.NewStoryResponse
 import com.primagiant.storyapp.data.remote.retrofit.ApiConfig
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -23,7 +20,6 @@ import retrofit2.Response
 
 class StoryViewModel(
     private val repository: StoryRepository,
-    private val pref: SettingPreference
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -35,18 +31,10 @@ class StoryViewModel(
     private val _detailStory = MutableLiveData<DetailStoryResponse>()
     val detailStory: LiveData<DetailStoryResponse> = _detailStory
 
-    private var token: String
+    fun listStory(tkn: String): LiveData<PagingData<ListStoryItem>> =
+        repository.getStory(tkn).cachedIn(viewModelScope)
 
-    init {
-        runBlocking {
-            token = pref.getToken().first()
-        }
-    }
-
-    val listStory: LiveData<PagingData<ListStoryItem>> =
-        repository.getStory(token).cachedIn(viewModelScope)
-
-    fun getDetailStory(idStory: String) {
+    fun getDetailStory(token: String, idStory: String) {
         _isLoading.value = true
 
         val bearerToken = "Bearer $token"
@@ -58,7 +46,7 @@ class StoryViewModel(
         client.enqueue(object : Callback<DetailStoryResponse> {
             override fun onResponse(
                 call: Call<DetailStoryResponse>,
-                response: Response<DetailStoryResponse>
+                response: Response<DetailStoryResponse>,
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
@@ -76,7 +64,13 @@ class StoryViewModel(
         })
     }
 
-    fun addStory(desc: RequestBody, photo: MultipartBody.Part, lat: Float?, lon: Float?) {
+    fun addStory(
+        token: String,
+        desc: RequestBody,
+        photo: MultipartBody.Part,
+        lat: Float?,
+        lon: Float?,
+    ) {
         _isLoading.value = true
 
         val bearerToken = "Bearer $token"
@@ -88,7 +82,7 @@ class StoryViewModel(
         client.enqueue(object : Callback<NewStoryResponse> {
             override fun onResponse(
                 call: Call<NewStoryResponse>,
-                response: Response<NewStoryResponse>
+                response: Response<NewStoryResponse>,
             ) {
                 _isLoading.value = false
                 if (!response.isSuccessful) {

@@ -16,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.primagiant.storyapp.R
+import com.primagiant.storyapp.data.local.preference.SettingPreferenceViewModel
 import com.primagiant.storyapp.databinding.ActivityAddStoryBinding
+import com.primagiant.storyapp.utils.SettingViewModelFactory
 import com.primagiant.storyapp.utils.ViewModelFactory
 import com.primagiant.storyapp.utils.reduceFileImage
 import com.primagiant.storyapp.utils.rotateFile
@@ -33,6 +35,10 @@ class AddStoryActivity : AppCompatActivity() {
 
     private val storyViewModel: StoryViewModel by viewModels {
         ViewModelFactory.getInstance(this)
+    }
+
+    private val settingPreferenceViewModel: SettingPreferenceViewModel by viewModels {
+        SettingViewModelFactory.getInstance(this)
     }
 
     private var getFile: File? = null
@@ -115,7 +121,10 @@ class AddStoryActivity : AppCompatActivity() {
                 "photo", file.name, photo
             )
 
-            storyViewModel.addStory(desc, imageMultipart, lat, lon)
+            settingPreferenceViewModel.getToken().observe(this) { token ->
+                storyViewModel.addStory(token, desc, imageMultipart, lat, lon)
+            }
+
 
             storyViewModel.apply {
                 isLoading.observe(this@AddStoryActivity) { isLoading ->
@@ -203,7 +212,7 @@ class AddStoryActivity : AppCompatActivity() {
         return if (lon == null) {
             null
         } else {
-            if (lon >= -180 && lon <= 180)  {
+            if (lon >= -180 && lon <= 180) {
                 lon
             } else {
                 null

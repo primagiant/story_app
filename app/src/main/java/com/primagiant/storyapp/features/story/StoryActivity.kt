@@ -64,8 +64,10 @@ class StoryActivity : AppCompatActivity() {
             }
         )
         lifecycleScope.launch {
-            storyViewModel.listStory.observe(this@StoryActivity) { pagingData ->
-                storyAdapter.submitData(lifecycle, pagingData)
+            settingPreferenceViewModel.getToken().observe(this@StoryActivity) { token ->
+                storyViewModel.listStory(token).observe(this@StoryActivity) { pagingData ->
+                    storyAdapter.submitData(lifecycle, pagingData)
+                }
             }
         }
     }
