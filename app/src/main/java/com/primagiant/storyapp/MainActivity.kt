@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.primagiant.storyapp.data.local.preference.SettingPreferenceViewModel
 import com.primagiant.storyapp.databinding.ActivityMainBinding
-import com.primagiant.storyapp.features.SettingViewModelFactory
+import com.primagiant.storyapp.utils.SettingViewModelFactory
 import com.primagiant.storyapp.features.auth.LoginFragment
 import com.primagiant.storyapp.features.story.StoryActivity
 

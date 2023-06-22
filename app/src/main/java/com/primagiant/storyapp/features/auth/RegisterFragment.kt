@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import com.primagiant.storyapp.R
 import com.primagiant.storyapp.data.local.preference.SettingPreferenceViewModel
 import com.primagiant.storyapp.databinding.FragmentRegisterBinding
-import com.primagiant.storyapp.features.SettingViewModelFactory
+import com.primagiant.storyapp.utils.SettingViewModelFactory
 import com.primagiant.storyapp.features.story.StoryActivity
 
 class RegisterFragment : Fragment() {

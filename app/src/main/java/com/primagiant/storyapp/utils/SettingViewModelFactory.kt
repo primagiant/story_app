@@ -1,4 +1,4 @@
-package com.primagiant.storyapp.features
+package com.primagiant.storyapp.utils
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

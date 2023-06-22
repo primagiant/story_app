@@ -17,41 +17,43 @@ interface ApiService {
     fun register(
         @Field("name") name: String,
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
     ): Call<RegisterResponse>
 
     @FormUrlEncoded
     @POST("login")
     fun login(
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
     ): Call<LoginResponse>
 
     @GET("stories")
-    fun getAllStory(
+    suspend fun getAllStory(
         @Header("Authorization") token: String,
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
     ): StoryResponse
 
     @GET("stories?location=1")
     fun getStoryWithLocation(
         @Header("Authorization") token: String,
-        @Query("size") size: Int = 50
+        @Query("size") size: Int = 50,
     ): Call<StoryResponse>
 
     @GET("stories/{id}")
     fun detailStory(
         @Header("Authorization") token: String,
-        @Path("id") id: String
+        @Path("id") id: String,
     ): Call<DetailStoryResponse>
 
     @Multipart
     @POST("stories")
     fun addStory(
         @Header("Authorization") token: String,
+        @Part photo: MultipartBody.Part,
         @Part("description") description: RequestBody,
-        @Part photo: MultipartBody.Part
+        @Part("lat") lat: Float?,
+        @Part("lon") lon: Float?,
     ): Call<NewStoryResponse>
 
 }

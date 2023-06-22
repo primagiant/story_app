@@ -1,5 +1,6 @@
 package com.primagiant.storyapp.features.story
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,8 +37,8 @@ class StoryViewModel(
 
     private var token: String
 
-    init{
-        runBlocking{
+    init {
+        runBlocking {
             token = pref.getToken().first()
         }
     }
@@ -45,12 +46,14 @@ class StoryViewModel(
     val listStory: LiveData<PagingData<ListStoryItem>> =
         repository.getStory(token).cachedIn(viewModelScope)
 
-    fun getDetailStory(idStory: String, token: String) {
+    fun getDetailStory(idStory: String) {
         _isLoading.value = true
 
+        val bearerToken = "Bearer $token"
+
         val client = ApiConfig
-            .getApiService("Bearer $token")
-            .detailStory(token ,idStory)
+            .getApiService()
+            .detailStory(bearerToken, idStory)
 
         client.enqueue(object : Callback<DetailStoryResponse> {
             override fun onResponse(
@@ -73,12 +76,14 @@ class StoryViewModel(
         })
     }
 
-    fun addStory(desc: RequestBody, photo: MultipartBody.Part, token: String) {
+    fun addStory(desc: RequestBody, photo: MultipartBody.Part, lat: Float?, lon: Float?) {
         _isLoading.value = true
 
+        val bearerToken = "Bearer $token"
+
         val client = ApiConfig
-            .getApiService("Bearer $token")
-            .addStory(token, desc, photo)
+            .getApiService()
+            .addStory(bearerToken, photo, desc, lat, lon)
 
         client.enqueue(object : Callback<NewStoryResponse> {
             override fun onResponse(
@@ -88,12 +93,14 @@ class StoryViewModel(
                 _isLoading.value = false
                 if (!response.isSuccessful) {
                     _message.value = response.message()
+                    Log.e("Add 1", response.message())
                 }
             }
 
             override fun onFailure(call: Call<NewStoryResponse>, t: Throwable) {
                 _isLoading.value = false
                 _message.value = t.message.toString()
+                Log.e("Add 2", t.message.toString())
             }
 
         })

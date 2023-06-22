@@ -33,4 +33,10 @@
     <string name="validate_image">Please select an Image first</string>
     <string name="validate_desc">Please fill the description first</string>
     <string name="validate_all">Please fill the data first</string>
+    <string name="retry" translatable="false">Retry</string>
+    <string name="maps_string">Maps</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="latitude_placeholder">input latitude like this 3.0 or keep it blank if you don\'t know</string>
+    <string name="longitude_placeholder">input longitude like this 3.0 or keep it blank if you don\'t know</string>
+    <string name="timeout">Timeout</string>
 </resources>

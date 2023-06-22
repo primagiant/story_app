@@ -17,6 +17,9 @@ class AuthViewModel : ViewModel() {
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    private val _registerResult = MutableLiveData<RegisterResponse>()
+    val registerResult: LiveData<RegisterResponse> = _registerResult
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -60,6 +63,7 @@ class AuthViewModel : ViewModel() {
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
+                    _registerResult.value = response.body()
                     _message.value = response.message()
                     login(email, password)
                 } else {
